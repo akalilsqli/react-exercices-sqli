@@ -1,0 +1,13 @@
+.country {
+    display: flex;
+}
+
+.country > div { 
+    flex: 1;
+}
+
+.progress { 
+    background-color: #9b59b6;
+    height: 15px;
+    border-radius: 5px;
+}
