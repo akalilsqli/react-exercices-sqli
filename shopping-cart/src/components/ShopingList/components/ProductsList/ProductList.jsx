@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { shoppingListActions } from '../../../../context/actions';
+import { ShoppingListContext } from '../../../../context/ShoppingListContext';
 import Button from '../../../SharedComponents/Button/Button';
 import TextBox from '../../../SharedComponents/TextBox/TextBox';
 import Title from '../../../SharedComponents/Title/Title';
@@ -7,27 +9,18 @@ import styles from './ProductList.module.css';
 
 const ProductList = ({
     isPacked = false, 
-    productsList,
+    // productsList,
     setProducts
 }) => {
+    const {state : productsList, dispatch } = useContext(ShoppingListContext);
+    
+    // grap props using our context
     const [search , setSearch] = useState("");
 
     const title = isPacked ? "Packed" : "Unpacked";
 
-    const toggleIsChecked = (product) => () => {
-        const newProduct = {...product ,isPacked : !product.isPacked }
-        setProducts(prevProducts => ([...prevProducts.filter(prevProduct => prevProduct.id !== product.id) , newProduct ]))
-    }
-
-
-    const removeProduct = (id) => () => {
-        setProducts(prevProducts => prevProducts.filter(prevProduct => prevProduct.id !== id ))
-    }
-
-    const unpackAllItems = () => {
-        setProducts(prevProducts => prevProducts.map(
-            product => ({ ...product , isPacked : false})
-        ))
+    const toggleAll = () => {
+        dispatch({ type : shoppingListActions.TOGGLE_ALL , payload : isPacked})
     }
 
     return <div className={styles.container}>
@@ -39,11 +32,11 @@ const ProductList = ({
             .filter(product => {               
                 return product.name.toLowerCase().includes(search.toLowerCase())
             })          
-            .map(product => <Product removeProduct={removeProduct(product.id)} onCheck={toggleIsChecked(product)} product={product}/>)
+            .map(product => <Product product={product}/>)
         
         }
 
-        <Button text={"Mark all as unpacked"} onClick={unpackAllItems} />
+        <Button text={`Mark all as ${isPacked ? 'unpacked' : 'packed'}`} onClick={toggleAll} />
     
         <div><span>
             Total : {

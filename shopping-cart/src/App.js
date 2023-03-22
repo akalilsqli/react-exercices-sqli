@@ -1,11 +1,14 @@
 import './App.css';
 import ShoppingList from './components/ShopingList/ShoppingList';
+import ShoppingListProvider from './context/ShoppingListContext';
 
 
 function App() {
   return (
     <div className="App">
-      <ShoppingList />
+      <ShoppingListProvider>
+       <ShoppingList />
+      </ShoppingListProvider>
     </div>
   );
 }
