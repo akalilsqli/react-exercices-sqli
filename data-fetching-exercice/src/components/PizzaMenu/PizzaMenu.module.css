@@ -1,0 +1,12 @@
+.container { 
+    display: flex;
+    max-width: 1000px;
+    margin: 20px auto;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px 20px;
+}
+
+.picture {
+    width: 200px;
+}
