@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useShoppingListStore } from '../../../../store';
 import Button from '../../../SharedComponents/Button/Button';
 import TextBox from '../../../SharedComponents/TextBox/TextBox';
 import Title from '../../../SharedComponents/Title/Title';
@@ -7,27 +8,27 @@ import styles from './ProductList.module.css';
 
 const ProductList = ({
     isPacked = false, 
-    productsList,
+    // productsList,
     setProducts
 }) => {
+    const {products : productsList , toggle , remove , toggleAll} = useShoppingListStore(state => state);
+    
     const [search , setSearch] = useState("");
 
     const title = isPacked ? "Packed" : "Unpacked";
 
     const toggleIsChecked = (product) => () => {
-        const newProduct = {...product ,isPacked : !product.isPacked }
-        setProducts(prevProducts => ([...prevProducts.filter(prevProduct => prevProduct.id !== product.id) , newProduct ]))
+        toggle(product)
     }
 
 
     const removeProduct = (id) => () => {
-        setProducts(prevProducts => prevProducts.filter(prevProduct => prevProduct.id !== id ))
+        remove(id)
     }
 
     const unpackAllItems = () => {
-        setProducts(prevProducts => prevProducts.map(
-            product => ({ ...product , isPacked : false})
-        ))
+        toggleAll(isPacked)
+
     }
 
     return <div className={styles.container}>
